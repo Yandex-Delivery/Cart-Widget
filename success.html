@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Заказ успешно оформлен!</title>
+
+  <!-- Следующие 2 строки нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
+  <script type="text/javascript" src="https://api-maps.yandex.ru/2.0/?load=package.standard,package.geoQuery&lang=ru-RU"></script>
+  <script src="https://delivery.yandex-team.ru/widget/loader?resource_id=...&sid=...&key=..."></script>
+
+  <!-- Инициализация виджета -->
+  <script type="text/javascript">
+    ydwidget.ready(function(){
+      ydwidget.initCartWidget({
+        //завершение загрузки корзинного виджета
+        'onLoad': function () {
+          //подтверждаем заказ, и передаем любые данные со страницы успешного оформления, если нужно
+          //в данном случае, номер заказа (чтобы номер заказа в CMS и в Яндекс.Доставке совпадал)
+          //вызов метода confirmOrder подразумевает, что заказ был ранее записан в cookie
+          //методом createOrder (прямым вызовом, или нажатием на элемент с атрибутом data-ydwidget-createorder)
+          ydwidget.cartWidget.order.confirmOrder({'order_num': yd$('#order_num').text()})
+            .done(function (data) {
+              if (data.status == 'ok') {
+                console.log('Заказ создан успешно. ', data)
+              } else {
+                //при правильной интеграции, на этом этапе ошибки быть не должно, так как вся валидация
+                //происходит на этапе вызова createOrder, и здесь в cookie уже валидные данные
+                console.log('При создании заказа были ошибки.', data)
+              }
+            });
+        }
+      })
+    })
+  </script>
+</head>
+<body>
+  <p>Заказ успешно оформлен, номер заказа <span id="order_num">10500</span></p>
+</body>
+</html>

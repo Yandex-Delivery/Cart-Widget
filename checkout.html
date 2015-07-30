@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Оформление заказа</title>
+  <!-- Следующие 2 строки нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
+  <script type="text/javascript" src="https://api-maps.yandex.ru/2.0/?load=package.standard,package.geoQuery&lang=ru-RU"></script>
+  <script src="https://delivery.yandex-team.ru/widget/loader?resource_id=...&sid=...&key=..."></script>
+
+  <!-- Создаем условный объект с данными о содержимом корзины (для примера) -->
+  <script type="text/javascript">
+    window.cart = {
+      quantity: 3, //общее количество товаров
+      weight: 2,
+      cost: 1000
+    }
+  </script>
+
+  <!-- Инициализация виджета -->
+  <script type="text/javascript">
+    ydwidget.ready(function(){
+      ydwidget.initCartWidget({
+        //получить указанный пользователем город
+        'getCity': function () {
+          var city = yd$('#city').val();
+          if (city) {
+            return {value: city};
+          } else {
+            return false;
+          }
+        },
+        //id элемента-контейнера
+        'el': 'ydwidget',
+        //габариты 1 единицы усредненного товара
+        'length': 10,
+        'width': 10,
+        'height': 10,
+        //общее количество товаров в корзине
+        'totalItemsQuantity': function () { return cart.quantity },
+        //общий вес товаров в корзине
+        'weight': function () { return cart.weight },
+        //общая стоимость товаров в корзине
+        'cost': function () { return cart.cost },
+        //габариты и количество по каждому товару в корзине
+        'itemsDimensions': function () {return [
+          [10,15,10,2],
+          [20,15,5,1]
+        ]},
+        //обработка автоматически определенного города
+        'setCity': function (city, region) { yd$('#city').val(city + ', ' + region) },
+        //обработка смены варианта доставки
+        'onDeliveryChange': function (delivery) {
+          //если выбран вариант доставки, выводим его описание и закрываем виджет, иначе произошел сброс варианта,
+          //очищаем описание
+          if (delivery) {
+            yd$('#delivery_description').text(ydwidget.cartWidget.view.helper.getDeliveryDescription(delivery));
+            ydwidget.cartWidget.close();
+          } else {
+            yd$('#delivery_description').text('')
+          }
+        },
+        //завершение загрузки корзинного виджета
+        'onLoad': function () {
+          //при клике на радиокнопку, если это не радиокнопка "Яндекс.Доставка", сбрасываем выбранную доставку
+          //в виджете
+          yd$(document).on('click', 'input:radio[name="delivery"]', function () {
+            if (yd$(this).not('#yd_delivery')) {
+              ydwidget.cartWidget.setDeliveryVariant(null);
+            }
+          });
+          //добавляем в форму отсутствующие поля "Улица", "Дом", "Индекс"
+          var $streetField = yd$('<div><input type="text" id="street" placeholder="улица"></div>');
+          var $houseField = yd$('<div><input type="text" id="house" placeholder="дом"></div>');
+          var $indexField = yd$('<div><input type="text" id="index" placeholder="индекс"></div>');
+          yd$('#city').after($streetField, $houseField, $indexField);
+        },
+        //снятие выбора с варианта доставки "Яндекс.Доставка" (настроенного в CMS)
+        'unSelectYdVariant': function () { yd$('#yd_delivery').prop('checked', false) },
+        //автодополнение
+        'autocomplete': ['city', 'street', 'index'],
+        'cityEl': '#city',
+        'streetEl': '#street',
+        'houseEl': '#house',
+        'indexEl': '#index',
+        //создавать заказ в cookie для его последующего создания в Яндекс.Доставке только если выбрана доставка Яндекса
+        'createOrderFlag': function () { return yd$('#yd_delivery').is(':checked') },
+        //необходимые для создания заказа поля
+        //возможно указывать и другие поля, см. объект Order в документации
+        'order': {
+          //имя, фамилия, телефон, улица, дом, индекс
+          'recipient_first_name': function () { return yd$('#name').val() },
+          'recipient_last_name': function () { return yd$('#surname').val() },
+          'recipient_phone': function () { return yd$('#phone').val() },
+          'deliverypoint_street': function () { return yd$('#street').val() },
+          'deliverypoint_house': function () { return yd$('#house').val() },
+          'deliverypoint_index': function () { return yd$('#index').val() },
+          //выбранный метод оплаты
+          'order_payment_method': function () {
+            var CASH = 1,
+                PREPAID = 3;
+            var orderPaymentMethod;
+            if (yd$('#payment_cash').is(':checked')) {
+              orderPaymentMethod = CASH;
+            } else {
+              orderPaymentMethod = PREPAID;
+            }
+            return orderPaymentMethod
+          },
+          //товарные позиции в заказе
+          //возможно указывать и другие поля, см. объект OrderItem в документации
+          'order_items': function () {
+            var items = [];
+            items.push({
+              'orderitem_name': 'Товар 1',
+              'orderitem_quantity': 2,
+              'orderitem_cost': 100
+            });
+            items.push({
+              'orderitem_name': 'Товар 2',
+              'orderitem_quantity': 1,
+              'orderitem_cost': 200
+            });
+            return items;
+          }
+        },
+        //id элемента для вывода ошибок валидации. Вместо него можно указать параметр onValidationEnd, для кастомизации
+        //вывода ошибок
+        'errorsEl': 'yd_errors',
+        //запустить сабмит формы, когда валидация успешно прошла и заказ создан в cookie,
+        //либо если createOrderFlag вернул false
+        'runOrderCreation': function () { yd$('form#order').submit() }
+      })
+    })
+  </script>
+
+</head>
+<body>
+
+<!-- элемент для отображения ошибок валидации -->
+<div id="yd_errors"></div>
+
+<form action="success.html" id="order">
+  <fieldset style="float:left">
+    <legend>Получатель</legend>
+    <div><input type="text" name="name" placeholder="имя" id="name"></div>
+    <div><input type="text" name="surname" placeholder="фамилия" id="surname"></div>
+    <div><input type="text" name="phone" placeholder="телефон" id="phone"></div>
+    <div><input type="text" name="city" placeholder="город" id="city"></div>
+  </fieldset>
+  <div style="float:left">
+    <fieldset>
+      <legend>Доставка</legend>
+      <div><label><input type="radio" name="delivery">Доставка интернет-магазина</label></div>
+
+      <!-- атрибут data-ydwidget-open обеспечивает открытие виджета при клике на элемент -->
+      <div><label data-ydwidget-open><input type="radio" name="delivery" id="yd_delivery">Яндекс.Доставка</label></div>
+
+      <p id="delivery_description"></p>
+    </fieldset>
+    <fieldset>
+      <legend>Оплата</legend>
+      <div><label><input type="radio" name="payment" id="payment_cash" checked="checked">Наличными при получении</label></div>
+      <div><label><input type="radio" name="payment">Оплата Webmoney</label></div>
+    </fieldset>
+
+    <!-- Заменяем кнопку оформления заказа -->
+    <!--<div><input type="submit" value="оформить заказ"></div>-->
+    <div><input type="button" value="оформить заказ" data-ydwidget-createorder></div>
+
+  </div>
+</form>
+
+<!-- Элемент-контейнер виджета. Класс yd-widget-modal обеспечивает отображение виджета в модальном окне -->
+<div id="ydwidget" class="yd-widget-modal"></div>
+
+</body>
+</html>
