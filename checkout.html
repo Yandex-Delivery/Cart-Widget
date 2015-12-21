@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Оформление заказа</title>
-  <!-- Следующие 2 строки нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
-  <script type="text/javascript" src="https://api-maps.yandex.ru/2.0/?load=package.standard,package.geoQuery&lang=ru-RU"></script>
+  <title>РћС„РѕСЂРјР»РµРЅРёРµ Р·Р°РєР°Р·Р°</title>
+  <!-- РЎР»РµРґСѓСЋС‰РёРµ 2 СЃС‚СЂРѕРєРё РЅСѓР¶РЅРѕ Р·Р°РјРµРЅРёС‚СЊ РєРѕРґРѕРј РєРѕСЂР·РёРЅРЅРѕРіРѕ РІРёРґР¶РµС‚Р° РёР· Р»РёС‡РЅРѕРіРѕ РєР°Р±РёРЅРµС‚Р° РЇРЅРґРµРєСЃ.Р”РѕСЃС‚Р°РІРєРё -->
+  <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru-RU"></script>
   <script src="https://delivery.yandex-team.ru/widget/loader?resource_id=...&sid=...&key=..."></script>
 
-  <!-- Создаем условный объект с данными о содержимом корзины (для примера) -->
+  <!-- РЎРѕР·РґР°РµРј СѓСЃР»РѕРІРЅС‹Р№ РѕР±СЉРµРєС‚ СЃ РґР°РЅРЅС‹РјРё Рѕ СЃРѕРґРµСЂР¶РёРјРѕРј РєРѕСЂР·РёРЅС‹ (РґР»СЏ РїСЂРёРјРµСЂР°) -->
   <script type="text/javascript">
     window.cart = {
-      quantity: 3, //общее количество товаров
+      quantity: 3, //РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂРѕРІ
       weight: 2,
       cost: 1000
     }
   </script>
 
-  <!-- Инициализация виджета -->
+  <!-- РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІРёРґР¶РµС‚Р° -->
   <script type="text/javascript">
     ydwidget.ready(function(){
       ydwidget.initCartWidget({
-        //получить указанный пользователем город
+        //РїРѕР»СѓС‡РёС‚СЊ СѓРєР°Р·Р°РЅРЅС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј РіРѕСЂРѕРґ
         'getCity': function () {
           var city = yd$('#city').val();
           if (city) {
@@ -28,29 +28,29 @@
             return false;
           }
         },
-        //id элемента-контейнера
+        //id СЌР»РµРјРµРЅС‚Р°-РєРѕРЅС‚РµР№РЅРµСЂР°
         'el': 'ydwidget',
-        //габариты 1 единицы усредненного товара
+        //РіР°Р±Р°СЂРёС‚С‹ 1 РµРґРёРЅРёС†С‹ СѓСЃСЂРµРґРЅРµРЅРЅРѕРіРѕ С‚РѕРІР°СЂР°
         'length': 10,
         'width': 10,
         'height': 10,
-        //общее количество товаров в корзине
+        //РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂРѕРІ РІ РєРѕСЂР·РёРЅРµ
         'totalItemsQuantity': function () { return cart.quantity },
-        //общий вес товаров в корзине
+        //РѕР±С‰РёР№ РІРµСЃ С‚РѕРІР°СЂРѕРІ РІ РєРѕСЂР·РёРЅРµ
         'weight': function () { return cart.weight },
-        //общая стоимость товаров в корзине
+        //РѕР±С‰Р°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ С‚РѕРІР°СЂРѕРІ РІ РєРѕСЂР·РёРЅРµ
         'cost': function () { return cart.cost },
-        //габариты и количество по каждому товару в корзине
+        //РіР°Р±Р°СЂРёС‚С‹ Рё РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕ РєР°Р¶РґРѕРјСѓ С‚РѕРІР°СЂСѓ РІ РєРѕСЂР·РёРЅРµ
         'itemsDimensions': function () {return [
           [10,15,10,2],
           [20,15,5,1]
         ]},
-        //обработка автоматически определенного города
+        //РѕР±СЂР°Р±РѕС‚РєР° Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РѕРїСЂРµРґРµР»РµРЅРЅРѕРіРѕ РіРѕСЂРѕРґР°
         'setCity': function (city, region) { yd$('#city').val(city + ', ' + region) },
-        //обработка смены варианта доставки
+        //РѕР±СЂР°Р±РѕС‚РєР° СЃРјРµРЅС‹ РІР°СЂРёР°РЅС‚Р° РґРѕСЃС‚Р°РІРєРё
         'onDeliveryChange': function (delivery) {
-          //если выбран вариант доставки, выводим его описание и закрываем виджет, иначе произошел сброс варианта,
-          //очищаем описание
+          //РµСЃР»Рё РІС‹Р±СЂР°РЅ РІР°СЂРёР°РЅС‚ РґРѕСЃС‚Р°РІРєРё, РІС‹РІРѕРґРёРј РµРіРѕ РѕРїРёСЃР°РЅРёРµ Рё Р·Р°РєСЂС‹РІР°РµРј РІРёРґР¶РµС‚, РёРЅР°С‡Рµ РїСЂРѕРёР·РѕС€РµР» СЃР±СЂРѕСЃ РІР°СЂРёР°РЅС‚Р°,
+          //РѕС‡РёС‰Р°РµРј РѕРїРёСЃР°РЅРёРµ
           if (delivery) {
             yd$('#delivery_description').text(ydwidget.cartWidget.view.helper.getDeliveryDescription(delivery));
             ydwidget.cartWidget.close();
@@ -58,42 +58,42 @@
             yd$('#delivery_description').text('')
           }
         },
-        //завершение загрузки корзинного виджета
+        //Р·Р°РІРµСЂС€РµРЅРёРµ Р·Р°РіСЂСѓР·РєРё РєРѕСЂР·РёРЅРЅРѕРіРѕ РІРёРґР¶РµС‚Р°
         'onLoad': function () {
-          //при клике на радиокнопку, если это не радиокнопка "Яндекс.Доставка", сбрасываем выбранную доставку
-          //в виджете
+          //РїСЂРё РєР»РёРєРµ РЅР° СЂР°РґРёРѕРєРЅРѕРїРєСѓ, РµСЃР»Рё СЌС‚Рѕ РЅРµ СЂР°РґРёРѕРєРЅРѕРїРєР° "РЇРЅРґРµРєСЃ.Р”РѕСЃС‚Р°РІРєР°", СЃР±СЂР°СЃС‹РІР°РµРј РІС‹Р±СЂР°РЅРЅСѓСЋ РґРѕСЃС‚Р°РІРєСѓ
+          //РІ РІРёРґР¶РµС‚Рµ
           yd$(document).on('click', 'input:radio[name="delivery"]', function () {
             if (yd$(this).not('#yd_delivery')) {
               ydwidget.cartWidget.setDeliveryVariant(null);
             }
           });
-          //добавляем в форму отсутствующие поля "Улица", "Дом", "Индекс"
-          var $streetField = yd$('<div><input type="text" id="street" placeholder="улица"></div>');
-          var $houseField = yd$('<div><input type="text" id="house" placeholder="дом"></div>');
-          var $indexField = yd$('<div><input type="text" id="index" placeholder="индекс"></div>');
+          //РґРѕР±Р°РІР»СЏРµРј РІ С„РѕСЂРјСѓ РѕС‚СЃСѓС‚СЃС‚РІСѓСЋС‰РёРµ РїРѕР»СЏ "РЈР»РёС†Р°", "Р”РѕРј", "РРЅРґРµРєСЃ"
+          var $streetField = yd$('<div><input type="text" id="street" placeholder="СѓР»РёС†Р°"></div>');
+          var $houseField = yd$('<div><input type="text" id="house" placeholder="РґРѕРј"></div>');
+          var $indexField = yd$('<div><input type="text" id="index" placeholder="РёРЅРґРµРєСЃ"></div>');
           yd$('#city').after($streetField, $houseField, $indexField);
         },
-        //снятие выбора с варианта доставки "Яндекс.Доставка" (настроенного в CMS)
+        //СЃРЅСЏС‚РёРµ РІС‹Р±РѕСЂР° СЃ РІР°СЂРёР°РЅС‚Р° РґРѕСЃС‚Р°РІРєРё "РЇРЅРґРµРєСЃ.Р”РѕСЃС‚Р°РІРєР°" (РЅР°СЃС‚СЂРѕРµРЅРЅРѕРіРѕ РІ CMS)
         'unSelectYdVariant': function () { yd$('#yd_delivery').prop('checked', false) },
-        //автодополнение
+        //Р°РІС‚РѕРґРѕРїРѕР»РЅРµРЅРёРµ
         'autocomplete': ['city', 'street', 'index'],
         'cityEl': '#city',
         'streetEl': '#street',
         'houseEl': '#house',
         'indexEl': '#index',
-        //создавать заказ в cookie для его последующего создания в Яндекс.Доставке только если выбрана доставка Яндекса
+        //СЃРѕР·РґР°РІР°С‚СЊ Р·Р°РєР°Р· РІ cookie РґР»СЏ РµРіРѕ РїРѕСЃР»РµРґСѓСЋС‰РµРіРѕ СЃРѕР·РґР°РЅРёСЏ РІ РЇРЅРґРµРєСЃ.Р”РѕСЃС‚Р°РІРєРµ С‚РѕР»СЊРєРѕ РµСЃР»Рё РІС‹Р±СЂР°РЅР° РґРѕСЃС‚Р°РІРєР° РЇРЅРґРµРєСЃР°
         'createOrderFlag': function () { return yd$('#yd_delivery').is(':checked') },
-        //необходимые для создания заказа поля
-        //возможно указывать и другие поля, см. объект Order в документации
+        //РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ Р·Р°РєР°Р·Р° РїРѕР»СЏ
+        //РІРѕР·РјРѕР¶РЅРѕ СѓРєР°Р·С‹РІР°С‚СЊ Рё РґСЂСѓРіРёРµ РїРѕР»СЏ, СЃРј. РѕР±СЉРµРєС‚ Order РІ РґРѕРєСѓРјРµРЅС‚Р°С†РёРё
         'order': {
-          //имя, фамилия, телефон, улица, дом, индекс
+          //РёРјСЏ, С„Р°РјРёР»РёСЏ, С‚РµР»РµС„РѕРЅ, СѓР»РёС†Р°, РґРѕРј, РёРЅРґРµРєСЃ
           'recipient_first_name': function () { return yd$('#name').val() },
           'recipient_last_name': function () { return yd$('#surname').val() },
           'recipient_phone': function () { return yd$('#phone').val() },
           'deliverypoint_street': function () { return yd$('#street').val() },
           'deliverypoint_house': function () { return yd$('#house').val() },
           'deliverypoint_index': function () { return yd$('#index').val() },
-          //выбранный метод оплаты
+          //РІС‹Р±СЂР°РЅРЅС‹Р№ РјРµС‚РѕРґ РѕРїР»Р°С‚С‹
           'order_payment_method': function () {
             var CASH = 1,
                 PREPAID = 3;
@@ -105,28 +105,28 @@
             }
             return orderPaymentMethod
           },
-          //товарные позиции в заказе
-          //возможно указывать и другие поля, см. объект OrderItem в документации
+          //С‚РѕРІР°СЂРЅС‹Рµ РїРѕР·РёС†РёРё РІ Р·Р°РєР°Р·Рµ
+          //РІРѕР·РјРѕР¶РЅРѕ СѓРєР°Р·С‹РІР°С‚СЊ Рё РґСЂСѓРіРёРµ РїРѕР»СЏ, СЃРј. РѕР±СЉРµРєС‚ OrderItem РІ РґРѕРєСѓРјРµРЅС‚Р°С†РёРё
           'order_items': function () {
             var items = [];
             items.push({
-              'orderitem_name': 'Товар 1',
+              'orderitem_name': 'РўРѕРІР°СЂ 1',
               'orderitem_quantity': 2,
               'orderitem_cost': 100
             });
             items.push({
-              'orderitem_name': 'Товар 2',
+              'orderitem_name': 'РўРѕРІР°СЂ 2',
               'orderitem_quantity': 1,
               'orderitem_cost': 200
             });
             return items;
           }
         },
-        //id элемента для вывода ошибок валидации. Вместо него можно указать параметр onValidationEnd, для кастомизации
-        //вывода ошибок
+        //id СЌР»РµРјРµРЅС‚Р° РґР»СЏ РІС‹РІРѕРґР° РѕС€РёР±РѕРє РІР°Р»РёРґР°С†РёРё. Р’РјРµСЃС‚Рѕ РЅРµРіРѕ РјРѕР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РїР°СЂР°РјРµС‚СЂ onValidationEnd, РґР»СЏ РєР°СЃС‚РѕРјРёР·Р°С†РёРё
+        //РІС‹РІРѕРґР° РѕС€РёР±РѕРє
         'errorsEl': 'yd_errors',
-        //запустить сабмит формы, когда валидация успешно прошла и заказ создан в cookie,
-        //либо если createOrderFlag вернул false
+        //Р·Р°РїСѓСЃС‚РёС‚СЊ СЃР°Р±РјРёС‚ С„РѕСЂРјС‹, РєРѕРіРґР° РІР°Р»РёРґР°С†РёСЏ СѓСЃРїРµС€РЅРѕ РїСЂРѕС€Р»Р° Рё Р·Р°РєР°Р· СЃРѕР·РґР°РЅ РІ cookie,
+        //Р»РёР±Рѕ РµСЃР»Рё createOrderFlag РІРµСЂРЅСѓР» false
         'runOrderCreation': function () { yd$('form#order').submit() }
       })
     })
@@ -135,41 +135,41 @@
 </head>
 <body>
 
-<!-- элемент для отображения ошибок валидации -->
+<!-- СЌР»РµРјРµРЅС‚ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РѕС€РёР±РѕРє РІР°Р»РёРґР°С†РёРё -->
 <div id="yd_errors"></div>
 
 <form action="success.html" id="order">
   <fieldset style="float:left">
-    <legend>Получатель</legend>
-    <div><input type="text" name="name" placeholder="имя" id="name"></div>
-    <div><input type="text" name="surname" placeholder="фамилия" id="surname"></div>
-    <div><input type="text" name="phone" placeholder="телефон" id="phone"></div>
-    <div><input type="text" name="city" placeholder="город" id="city"></div>
+    <legend>РџРѕР»СѓС‡Р°С‚РµР»СЊ</legend>
+    <div><input type="text" name="name" placeholder="РёРјСЏ" id="name"></div>
+    <div><input type="text" name="surname" placeholder="С„Р°РјРёР»РёСЏ" id="surname"></div>
+    <div><input type="text" name="phone" placeholder="С‚РµР»РµС„РѕРЅ" id="phone"></div>
+    <div><input type="text" name="city" placeholder="РіРѕСЂРѕРґ" id="city"></div>
   </fieldset>
   <div style="float:left">
     <fieldset>
-      <legend>Доставка</legend>
-      <div><label><input type="radio" name="delivery">Доставка интернет-магазина</label></div>
+      <legend>Р”РѕСЃС‚Р°РІРєР°</legend>
+      <div><label><input type="radio" name="delivery">Р”РѕСЃС‚Р°РІРєР° РёРЅС‚РµСЂРЅРµС‚-РјР°РіР°Р·РёРЅР°</label></div>
 
-      <!-- атрибут data-ydwidget-open обеспечивает открытие виджета при клике на элемент -->
-      <div><label data-ydwidget-open><input type="radio" name="delivery" id="yd_delivery">Яндекс.Доставка</label></div>
+      <!-- Р°С‚СЂРёР±СѓС‚ data-ydwidget-open РѕР±РµСЃРїРµС‡РёРІР°РµС‚ РѕС‚РєСЂС‹С‚РёРµ РІРёРґР¶РµС‚Р° РїСЂРё РєР»РёРєРµ РЅР° СЌР»РµРјРµРЅС‚ -->
+      <div><label data-ydwidget-open><input type="radio" name="delivery" id="yd_delivery">РЇРЅРґРµРєСЃ.Р”РѕСЃС‚Р°РІРєР°</label></div>
 
       <p id="delivery_description"></p>
     </fieldset>
     <fieldset>
-      <legend>Оплата</legend>
-      <div><label><input type="radio" name="payment" id="payment_cash" checked="checked">Наличными при получении</label></div>
-      <div><label><input type="radio" name="payment">Оплата Webmoney</label></div>
+      <legend>РћРїР»Р°С‚Р°</legend>
+      <div><label><input type="radio" name="payment" id="payment_cash" checked="checked">РќР°Р»РёС‡РЅС‹РјРё РїСЂРё РїРѕР»СѓС‡РµРЅРёРё</label></div>
+      <div><label><input type="radio" name="payment">РћРїР»Р°С‚Р° Webmoney</label></div>
     </fieldset>
 
-    <!-- Заменяем кнопку оформления заказа -->
-    <!--<div><input type="submit" value="оформить заказ"></div>-->
-    <div><input type="button" value="оформить заказ" data-ydwidget-createorder></div>
+    <!-- Р—Р°РјРµРЅСЏРµРј РєРЅРѕРїРєСѓ РѕС„РѕСЂРјР»РµРЅРёСЏ Р·Р°РєР°Р·Р° -->
+    <!--<div><input type="submit" value="РѕС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·"></div>-->
+    <div><input type="button" value="РѕС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·" data-ydwidget-createorder></div>
 
   </div>
 </form>
 
-<!-- Элемент-контейнер виджета. Класс yd-widget-modal обеспечивает отображение виджета в модальном окне -->
+<!-- Р­Р»РµРјРµРЅС‚-РєРѕРЅС‚РµР№РЅРµСЂ РІРёРґР¶РµС‚Р°. РљР»Р°СЃСЃ yd-widget-modal РѕР±РµСЃРїРµС‡РёРІР°РµС‚ РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ РІРёРґР¶РµС‚Р° РІ РјРѕРґР°Р»СЊРЅРѕРј РѕРєРЅРµ -->
 <div id="ydwidget" class="yd-widget-modal"></div>
 
 </body>
