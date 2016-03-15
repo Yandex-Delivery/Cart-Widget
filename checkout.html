@@ -3,8 +3,8 @@
 <head>
   <title>Оформление заказа</title>
   <!-- Следующие 2 строки нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
-  <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru-RU"></script>
-  <script src="https://delivery.yandex-team.ru/widget/loader?resource_id=...&sid=...&key=..."></script>
+<script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru-RU"></script>
+  <script src="https://delivery.yandex-team.ru/widget/loader?resource_id=79&sid=3&key=6a75a675426b7768e629edb87255a099"></script>
 
   <!-- Создаем условный объект с данными о содержимом корзины (для примера) -->
   <script type="text/javascript">
@@ -40,6 +40,10 @@
         'weight': function () { return cart.weight },
         //общая стоимость товаров в корзине
         'cost': function () { return cart.cost },
+		//объявленная ценность заказа. Влияет на расчет стоимости в предлагаемых вариантах доставки, для записи поля в заказ данное поле так же нужно передать в объекте order (поле order_assessed_value)
+		'assessed_value': cart.cost,
+		//флаг отправки заказа через единый склад. Влияет на расчет стоимости в предлагаемых вариантах доставки, для записи поля в заказ данное поле так же нужно передать в объекте order (поле delivery_to_yd_warehouse).
+		'to_yd_warehouse': 1,
         //габариты и количество по каждому товару в корзине
         'itemsDimensions': function () {return [
           [10,15,10,2],
@@ -93,18 +97,10 @@
           'deliverypoint_street': function () { return yd$('#street').val() },
           'deliverypoint_house': function () { return yd$('#house').val() },
           'deliverypoint_index': function () { return yd$('#index').val() },
-          //выбранный метод оплаты
-          'order_payment_method': function () {
-            var CASH = 1,
-                PREPAID = 3;
-            var orderPaymentMethod;
-            if (yd$('#payment_cash').is(':checked')) {
-              orderPaymentMethod = CASH;
-            } else {
-              orderPaymentMethod = PREPAID;
-            }
-            return orderPaymentMethod
-          },
+		  //объявленная ценность заказа
+		  'order_assessed_value': 1000,
+		  //флаг отправки заказа через единый склад.
+		  'delivery_to_yd_warehouse': 1,
           //товарные позиции в заказе
           //возможно указывать и другие поля, см. объект OrderItem в документации
           'order_items': function () {
