@@ -4,7 +4,7 @@
   <title>Оформление заказа</title>
   <!-- Следующие 2 строки нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
 <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru-RU"></script>
-  <script src="https://delivery.yandex.ru/widget/loader?resource_id=x&sid=x&key=x"></script>
+ <script src="https://delivery.yandex-team.ru/widget/loader?resource_id=79&sid=3&key=6a75a675426b7768e629edb87255a099"></script>
 
   <!-- Создаем условный объект с данными о содержимом корзины (для примера) -->
   <script type="text/javascript">
@@ -50,7 +50,7 @@
 		//флаг отправки заказа через единый склад. Влияет на расчет стоимости в предлагаемых вариантах доставки, для записи поля в заказ данное поле так же нужно передать в объекте order (поле delivery_to_yd_warehouse).
 		'to_yd_warehouse': 1,
         //обработка автоматически определенного города
-        'setCity': function (city, region) { yd$('#city').val(city + ', ' + region) },
+        'setCity': function (city, region) { yd$('#city').val(region ? city + ', ' + region : city) },
         //обработка смены варианта доставки
         'onDeliveryChange': function (delivery) {
           //если выбран вариант доставки, выводим его описание и закрываем виджет, иначе произошел сброс варианта,
