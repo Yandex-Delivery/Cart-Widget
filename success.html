@@ -17,16 +17,7 @@
           //в данном случае, номер заказа (чтобы номер заказа в CMS и в Яндекс.Доставке совпадал)
           //вызов метода confirmOrder подразумевает, что заказ был ранее записан в cookie
           //методом createOrder (прямым вызовом, или нажатием на элемент с атрибутом data-ydwidget-createorder)
-          ydwidget.cartWidget.order.confirmOrder({'order_num': yd$('#order_num').text()})
-            .done(function (data) {
-              if (data.status == 'ok') {
-                console.log('Заказ создан успешно. ', data)
-              } else {
-                //при правильной интеграции, на этом этапе ошибки быть не должно, так как вся валидация
-                //происходит на этапе вызова createOrder, и здесь в cookie уже валидные данные
-                console.log('При создании заказа были ошибки.', data)
-              }
-            });
+          ydwidget.cartWidget.order.confirmOrder({'order_num': yd$('#order_num').text()});
         }
       })
     })
