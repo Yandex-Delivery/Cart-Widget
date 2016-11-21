@@ -2,9 +2,9 @@
 <html>
 <head>
   <title>Оформление заказа</title>
-  <!-- Следующие 2 строки нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
-<script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru-RU"></script>
- <script src="https://delivery.yandex-team.ru/widget/loader?resource_id=79&sid=3&key=6a75a675426b7768e629edb87255a099"></script>
+
+<!-- Следующую строку нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
+<script src="https://delivery.yandex.ru/widget/loader?resource_id=....&sid=...&key=......"></script>
 
   <!-- Создаем условный объект с данными о содержимом корзины (для примера) -->
   <script type="text/javascript">
@@ -30,10 +30,6 @@
         },
         //id элемента-контейнера
         'el': 'ydwidget',
-        //габариты 1 единицы усредненного товара
-        'length': 10,
-        'width': 10,
-        'height': 10,
         //общее количество товаров в корзине
         'totalItemsQuantity': function () { return cart.quantity },
         //общий вес товаров в корзине
@@ -47,8 +43,6 @@
         ]},
 		//объявленная ценность заказа. Влияет на расчет стоимости в предлагаемых вариантах доставки, для записи поля в заказ данное поле так же нужно передать в объекте order (поле order_assessed_value)
 		'assessed_value': cart.cost,
-		//флаг отправки заказа через единый склад. Влияет на расчет стоимости в предлагаемых вариантах доставки, для записи поля в заказ данное поле так же нужно передать в объекте order (поле delivery_to_yd_warehouse).
-		'to_yd_warehouse': 1,
         //обработка автоматически определенного города
         'setCity': function (city, region) { yd$('#city').val(region ? city + ', ' + region : city) },
         //обработка смены варианта доставки
@@ -57,6 +51,8 @@
           //очищаем описание
           if (delivery) {
             yd$('#delivery_description').text(ydwidget.cartWidget.view.helper.getDeliveryDescription(delivery));
+			yd$('#street').val(ydwidget.cartWidget.getAddress().street);
+			yd$('#house').val(ydwidget.cartWidget.getAddress().house + ', к. ' + ydwidget.cartWidget.getAddress().building);
             ydwidget.cartWidget.close();
           } else {
             yd$('#delivery_description').text('')
@@ -99,8 +95,6 @@
           'deliverypoint_index': function () { return yd$('#index').val() },
 		  //объявленная ценность заказа
 		  'order_assessed_value': cart.cost,
-		  //флаг отправки заказа через единый склад.
-		  'delivery_to_yd_warehouse': 1,
           //товарные позиции в заказе
           //возможно указывать и другие поля, см. объект OrderItem в документации
           'order_items': function () {
@@ -152,11 +146,6 @@
 
       <p id="delivery_description"></p>
     </fieldset>
-    <fieldset>
-      <legend>Оплата</legend>
-      <div><label><input type="radio" name="payment" id="payment_cash" checked="checked">Наличными при получении</label></div>
-      <div><label><input type="radio" name="payment">Оплата Webmoney</label></div>
-    </fieldset>
 
     <!-- Заменяем кнопку оформления заказа -->
     <!--<div><input type="submit" value="оформить заказ"></div>-->
@@ -167,6 +156,8 @@
 
 <!-- Элемент-контейнер виджета. Класс yd-widget-modal обеспечивает отображение виджета в модальном окне -->
 <div id="ydwidget" class="yd-widget-modal"></div>
+<script>
 
+</script>
 </body>
 </html>
