@@ -4,7 +4,7 @@
   <title>Оформление заказа</title>
 
 <!-- Следующую строку нужно заменить кодом корзинного виджета из личного кабинета Яндекс.Доставки -->
-<script src="https://delivery.yandex.ru/widget/loader?resource_id=....&sid=...&key=......"></script>
+<script src="https://delivery.yandex.ru/widget/loader?resource_id=...&sid=...&key=..."></script>
 
   <!-- Создаем условный объект с данными о содержимом корзины (для примера) -->
   <script type="text/javascript">
@@ -49,15 +49,19 @@
         'onDeliveryChange': function (delivery) {
           //если выбран вариант доставки, выводим его описание и закрываем виджет, иначе произошел сброс варианта,
           //очищаем описание
-          if (delivery) {
-            yd$('#delivery_description').text(ydwidget.cartWidget.view.helper.getDeliveryDescription(delivery));
-			yd$('#street').val(ydwidget.cartWidget.getAddress().street);
-			yd$('#house').val(ydwidget.cartWidget.getAddress().house + ', к. ' + ydwidget.cartWidget.getAddress().building);
-            ydwidget.cartWidget.close();
-          } else {
-            yd$('#delivery_description').text('')
-          }
-        },
+			if (delivery) {
+				yd$('#delivery_description').text(ydwidget.cartWidget.view.helper.getDeliveryDescription(delivery));
+				if (ydwidget.cartWidget.selectedDelivery.type == "POST") {
+					yd$('#street').val(ydwidget.cartWidget.getAddress().street);
+					yd$('#house').val(ydwidget.cartWidget.getAddress().house);
+					ydwidget.cartWidget.close();
+				} else {
+					ydwidget.cartWidget.close();
+				}
+			} else {
+				yd$('#delivery_description').text(''); 
+				 }
+		},
         //завершение загрузки корзинного виджета
         'onLoad': function () {
           //при клике на радиокнопку, если это не радиокнопка "Яндекс.Доставка", сбрасываем выбранную доставку
